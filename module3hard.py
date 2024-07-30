@@ -1,35 +1,21 @@
 summer = 0
 
 
-def calculate_structure_sum(data_str):
+def calculate_structure_sum(*data_str):
     global summer
-    for elem in data_str:
-        if isinstance(elem, int):
-            summer += elem
-        if isinstance(elem, str):
-            summer += len(elem)
-        if isinstance(elem, list):
-            for el1 in elem:
-                if isinstance(el1, int):
-                    summer += el1
-                elif isinstance(el1, str):
-                    summer += len(el1)
-                else:
-                    calculate_structure_sum(el1)
-        if isinstance(elem, dict):
-            for key_ in elem.keys():
+    for dat in data_str:
+        if isinstance(dat, tuple) or isinstance(dat, list) or isinstance(dat, set):
+            for elem in dat:
+                calculate_structure_sum(elem)
+        if isinstance(dat, dict):
+            for key_ in dat.keys():
                 summer += len(key_)
-            for value_ in elem.values():
+            for value_ in dat.values():
                 summer += value_
-        if isinstance(elem, tuple):
-            for el_tuple in elem:
-                if isinstance(el_tuple, int):
-                    summer += el_tuple
-                elif isinstance(el_tuple, str):
-                    summer += len(el_tuple)
-                else:
-                    calculate_structure_sum(el_tuple)
-    return summer
+        if isinstance(dat, int):
+            summer += dat
+        if isinstance(dat, str):
+            summer += len(dat)
 
 
 data_structure = [
@@ -41,4 +27,5 @@ data_structure = [
 ]
 
 calculate_structure_sum(data_structure)
+
 print(summer)
