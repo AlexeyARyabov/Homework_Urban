@@ -21,16 +21,14 @@ class Shop:
         file.close()
 
     def add(self, *products):
-        file = open(Shop.__file_name, 'r')
+        file = open(Shop.__file_name, 't+r')
         content = file.read()
         for p in products:
             if str(p) in content:
-                file.close()
                 print('Продукт ', p, ' уже есть в магазине')
             else:
-                file = open(Shop.__file_name, 'a')
                 file.write(Product.__str__(p)+'\n')
-                file.close()
+        file.close()
 
 
 s1 = Shop()
