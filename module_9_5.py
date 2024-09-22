@@ -16,14 +16,16 @@ class Iterator:
         return self
 
     def __next__(self):
-        self.pointer += self.step
+        current = self.pointer
         if self.step > 0:
             if self.pointer > self.stop:
                 raise StopIteration()
         if self.step < 0:
             if self.pointer < self.stop:
                 raise StopIteration()
-        return self.pointer
+        self.pointer += self.step
+        return current
+
 
 try:
     iter1 = Iterator(100, 200, 0)
