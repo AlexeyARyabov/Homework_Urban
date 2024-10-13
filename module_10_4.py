@@ -4,8 +4,6 @@ from random import randint
 from queue import Queue
 
 class Table:
-    #guest = None
-    #number = 0
 
     def __init__(self, number):
         self.number = number
@@ -34,26 +32,30 @@ class Cafe:
                     guest = Guest(table.guest)
                     guest.start()
                     guest.join()
-                    print(f'{guest.name} сел(-а) за стол номер {table.number}')
+                    print(f'{table.guest} сел(-а) за стол номер {table.number}')
                     break
                 elif all(not table.guest is None for table in self.tables):
-                    self.queue.put(guest)
+                    self.queue.put(guest.name)
                     print(f'{guest.name} в очереди')
                     break
 
 
     def discuss_guests(self):
-        if not self.queue.empty() or any(not table.guest is None for table in self.tables):
-            for table in self.tables:
-                for guest in guests:
-                    if not table.guest is None and guest.is_alive():
+        while not self.queue.empty() or any(not table.guest is None for table in self.tables):
+            for guest in guests:
+                for table in self.tables:
+                    if not table.guest is None and not guest.is_alive():
                         print(f'{table.guest} покушал(-а) и ушёл(ушла)')
                         print(f'Стол номер {table.number} свободен')
                         table.guest = None
-                    if table.guest is None and not self.queue.empty():
+                        break
+                    elif table.guest is None and not self.queue.empty():
                         table.guest = self.queue.get()
                         print(f'{table.guest} вышел(-ла) из очереди и сел(-а) за стол номер {table.number}')
-                        table.guest.start()
+                        guest = Guest(table.guest)
+                        guest.start()
+                        guest.join()
+
 
 
 # Создание столов
