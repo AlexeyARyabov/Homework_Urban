@@ -2,7 +2,7 @@ import sqlite3
 
 
 def initiate_db():
-    connection = sqlite3.connect('not_telegram.db')
+    connection = sqlite3.connect('telegram.db')
     cursor = connection.cursor()
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Products (
@@ -18,7 +18,7 @@ def initiate_db():
 
 
 def get_all_products():
-    connection = sqlite3.connect('not_telegram.db')
+    connection = sqlite3.connect('telegram.db')
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM Products")
     users = cursor.fetchall()
@@ -28,7 +28,7 @@ def get_all_products():
 
 
 initiate_db()
-'''connection = sqlite3.connect('not_telegram.db')
+'''connection = sqlite3.connect('telegram.db')
 cursor = connection.cursor()
 
 for i in range(1, 5):
