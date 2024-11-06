@@ -1,9 +1,9 @@
 import sqlite3
 
+connection = sqlite3.connect('telegram.db')
+cursor = connection.cursor()
 
 def initiate_db():
-    connection = sqlite3.connect('telegram.db')
-    cursor = connection.cursor()
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Products (
     id INTEGER PRIMARY KEY, 
@@ -13,18 +13,38 @@ def initiate_db():
     )
     '''
                    )
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Users (
+    id INTEGER PRIMARY KEY,
+    username TEXT NOT NULL,
+    email TEXT NOT NULL,
+    age INTEGER NOT NULL, 
+    balance TEXT NOT NULL
+    )
+    '''
+                   )
     connection.commit()
-    connection.close()
-
 
 def get_all_products():
-    connection = sqlite3.connect('telegram.db')
-    cursor = connection.cursor()
     cursor.execute("SELECT * FROM Products")
     users = cursor.fetchall()
     connection.commit()
-    connection.close()
     return users
+
+
+def add_user(username, email, age):
+    cursor.execute('INSERT INTO Users (username, email, age, balance) VALUES(?, ?, ?, ?)',
+                   (username, email, age, 1000))
+    connection.commit()
+
+
+def is_included(username):
+    check_user = cursor.execute('SELECT * FROM Users WHERE username=?', (username,))
+    if check_user.fetchone() is None:
+        return False
+    else:
+        return True
+
 
 
 initiate_db()
@@ -36,4 +56,3 @@ for i in range(1, 5):
                    (f'Продукт{i}', f'Описание{i}', i * 100))
 connection.commit()
 connection.close()'''
-
