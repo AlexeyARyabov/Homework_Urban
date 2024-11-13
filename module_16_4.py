@@ -23,7 +23,11 @@ async def create_user(username: Annotated[str, Path(min_length=5, max_length=20,
     if not users:
         new_id = 1
     else:
-        new_id = len(users) + 1
+        max_id = 1
+        for i in range(len(users)):
+            if users[i].id > max_id:
+                max_id = users[i].id
+        new_id = max_id + 1
     new_user = User(id=new_id, username=username, age=age)
     users.append(new_user)
     return new_user
@@ -43,10 +47,9 @@ async  def update_user(user_id: Annotated[int, Path(ge=1)]
 @app.delete('/user/{user_id}')
 async def deleted_user(user_id: Annotated[int, Path(ge=1)]) -> User:
     try:
-        print('step1')
-        if users[user_id - 1].id == user_id:
-            print('step2')
-            return users.pop(user_id - 1)
+        for i in range(len(users)):
+            if users[i].id == user_id:
+                return users.pop(i)
     except IndexError:
         raise HTTPException(status_code=404, detail="User was not found")
 
