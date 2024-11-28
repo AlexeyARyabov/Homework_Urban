@@ -49,11 +49,11 @@ async def update_user(db: Annotated[Session, Depends(get_db)], user_id: int, upd
             status_code=404,
             detail="User was not found"
         )
-    db.execute(update(User).where(User.id == user_id).values(username=update_user.username,
+    db.execute(update(User).where(User.id == user_id).values(
                                    firstname=update_user.firstname,
                                    lastname=update_user.lastname,
                                    age=update_user.age,
-                                   slug=slugify(update_user.username)))
+                                   ))
     db.commit()
     return {'status_code': status.HTTP_201_CREATED, 'transaction': 'User update is successful!'}
 
